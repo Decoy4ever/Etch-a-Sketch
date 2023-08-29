@@ -1,0 +1,6 @@
+/*style the main di*/
+.main-container{
+    display: flex;
+    border: 4px solid black;
+    height: 400px;
+}

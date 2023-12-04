@@ -14,27 +14,39 @@
 function printGrid(num){
     const divMain = document.querySelector(".main-container");
 
+    // style the container
+    divMain.style.height = "500px";
+    divMain.style.width = "500px";
+    const height = divMain.style.height;
+    const width = divMain.style.width;
+    // console.log("height: " + height);
+    // console.log("wdith: " + width);
+
+    // use for loop to print x number of div
     for(let row = 0; row < num; row ++){
         for(let col = 0; col<num; col ++){
 
+            // create a div 
             const divItem = document.createElement("div");
             const itemAtt = document.createAttribute("class");
             itemAtt.value = "main-item";
             divItem.setAttributeNode(itemAtt);
 
             // style the div
-            divItem.style.width = "30px";
-            divItem.style.height = "30px";
-            divItem.style.display = "flex";
-            divItem.style.flexGrow = "1";
+            divItem.style.height = `calc(${height}/${num})`;
+            const divHeight = divItem.style.height;
+            // console.log(divHeight);
+
+            divItem.style.width = `calc(${width}/${num})`;
+            const divWidth = divItem.style.width;
+            // console.log(divWidth);
+
+            // append a itemdiv to the main
             divMain.appendChild(divItem);
         }
     }
 }
-// create a div using div
-// get div container from main
-// append a div to the main
-// use for loop to print x number of div
+
 printGrid(16)
 // rangeSlider();
 

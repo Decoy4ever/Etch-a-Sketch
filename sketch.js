@@ -8,9 +8,9 @@ const height = divMain.style.height;
 const width = divMain.style.width;
 
 // 1. Create a Grid
-function printGrid(num){
+function createGrid(num){
 
-    // use for loop to print x number of div
+    // use for nested loop to print x number of div
     for(let row = 0; row < num; row ++){
         for(let col = 0; col < num; col ++){
 
@@ -37,7 +37,7 @@ function printGrid(num){
     }
 }
 
-// 2. create a buttons to change the color of the individual divs in the grid
+// 2. Change the color of the individual divs
 function changeColor(){
     this.style.backgroundColor = "black";
 }
@@ -47,34 +47,41 @@ function buttonSettings(){
     // create a button tag
     const button = document.createElement("button");
     const classButton = document.createAttribute("class");
-    const buttonText = document.createTextNode("Grid Size: ");
+    const buttonText = document.createTextNode("Enter Grid Size");
     classButton.value = "button";
-
-    // style the button
-    button.style.margin = "5px";
-
-    // button.setAttributeNode(buttonText);
     button.setAttributeNode(classButton);
     button.appendChild(buttonText);
 
     // add event listener to the button
-    button.addEventListener("click",enterGrid);
+    button.addEventListener("click",inputGridSize);
+
+    // style the button
+    button.style.margin = "5px";
 
     // append button the div container
     divSlider.appendChild(button);
 }
 
-function enterGrid(num){
-   num = prompt("Enter a Grid Size: ");
+function inputGridSize(num){
 
-   if(num > 100){
-       alert("This is gonna be difficult");
+   num = prompt("Enter a Grid Size between 2 - 100: ");
+
+   if(num > 100)
+   {
+       createGrid(100);
    }
-   printGrid(num);
+
+    // while user enters input
+    while(divMain.hasChildNodes()){
+        // delete the existing nodes
+        divMain.removeChild(divMain.firstChild);
+    }
+
+    // call the createGrid function
+    createGrid(num);
 }
 
 buttonSettings();
-
 
 
 

@@ -14,10 +14,13 @@ function createGrid(num){
     for(let row = 0; row < num; row ++){
         for(let col = 0; col < num; col ++){
 
+            // create a div
             const divItem = document.createElement("div");
+
+            // create att associated with the div
             const itemAtt = document.createAttribute("class");
 
-
+            // set the attributes
             itemAtt.value = "main-item";
             divItem.setAttributeNode(itemAtt);
 
@@ -41,7 +44,7 @@ function changeColor(){
 
 // 3. create a button that will send a user pop up and ask for the number of squares
 function buttonSettings(){
-
+    // create a button tag
     const button = document.createElement("button");
     const classButton = document.createAttribute("class");
     const buttonText = document.createTextNode("Enter Grid Size");
@@ -63,18 +66,19 @@ function inputGridSize(num){
 
    num = prompt("Enter a Grid Size between 2 - 100: ");
 
-    // delete the existing nodes of the current grid
-    while(divMain.hasChildNodes()) {
+   if(num > 100)
+   {
+       createGrid(100);
+   }
+
+    // while user enters input
+    while(divMain.hasChildNodes()){
+        // delete the existing nodes
         divMain.removeChild(divMain.firstChild);
     }
 
-   // create the max number of grid size 100
-   if(num > 100) {
-       createGrid(100);
-   }
-   else{
-       createGrid(num);
-   }
+    // call the createGrid function
+    createGrid(num);
 }
 
 buttonSettings();

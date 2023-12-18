@@ -44,22 +44,35 @@ function changeColor(){
 
 // 3. create a button that will send a user pop up and ask for the number of squares
 function buttonSettings(){
-    // create a button tag
-    const button = document.createElement("button");
+    // create a gridBtn tag
+    const gridBtn = document.createElement("button");
+    const resetBtn = document.createElement("button");
+
+
     const classButton = document.createAttribute("class");
     const buttonText = document.createTextNode("Enter Grid Size");
+
+    const resetBtnClass = document.createAttribute("class");
+    const resetBtnText = document.createTextNode("Reset");
+
     classButton.value = "button";
-    button.setAttributeNode(classButton);
-    button.appendChild(buttonText);
+    gridBtn.setAttributeNode(classButton);
+    gridBtn.appendChild(buttonText);
 
-    // add event listener to the button
-    button.addEventListener("click",inputGridSize);
+    resetBtnClass.value = "reset-btn";
+    resetBtn.setAttributeNode(resetBtnClass);
+    resetBtn.appendChild(resetBtnText);
 
-    // style the button
-    button.style.margin = "5px";
+    // add event listener to the gridBtn
+    gridBtn.addEventListener("click",inputGridSize);
+    resetBtn.addEventListener("click",resetGrid);
 
-    // append button the div container
-    divSlider.appendChild(button);
+    // style the gridBtn
+    gridBtn.style.margin = "5px";
+
+    // append gridBtn the div container
+    divSlider.appendChild(gridBtn);
+    divSlider.appendChild(resetBtn);
 }
 
 function inputGridSize(num){
@@ -71,15 +84,27 @@ function inputGridSize(num){
        createGrid(100);
    }
 
-    // while user enters input
-    while(divMain.hasChildNodes()){
-        // delete the existing nodes
-        divMain.removeChild(divMain.firstChild);
-    }
+    resetGrid();
 
     // call the createGrid function
     createGrid(num);
 }
+
+// create a rest button that resets the grid to its original grid
+// create a function called reset
+// change the color back to white
+function resetGrid(){
+    // while user enters input
+    while(divMain.hasChildNodes()){
+        // delete the existing nodes
+        divMain.removeChild(divMain.firstChild);
+
+        // change color to white
+        divMain.style.backgroundColor = "white";
+    }
+}
+
+// create a color button changes the color of the div into different colors
 
 buttonSettings();
 

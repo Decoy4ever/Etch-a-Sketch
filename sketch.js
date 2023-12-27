@@ -1,5 +1,7 @@
 const divMain = document.querySelector(".main-container");
 const divSlider = document.querySelector(".slider-container");
+// gridCreated var used to keep track grid is created or not
+let gridCreated = false;
 
 // style the container
 divMain.style.height = "500px";
@@ -17,7 +19,7 @@ function createGrid(num){
             // create a div
             const divItem = document.createElement("div");
 
-            // create att associated with the div
+            // create att associated with the nested iv
             const itemAtt = document.createAttribute("class");
 
             // set the attributes
@@ -25,86 +27,112 @@ function createGrid(num){
             divItem.setAttributeNode(itemAtt);
 
             // add event listener to change color of div
-            divItem.addEventListener("mouseover",changeColor);
+            divItem.addEventListener("mouseover",defaultColor);
+            // divItem.addEventListener("mouseover",changeColor);
+
 
             // style the div
             divItem.style.height = `calc(${height}/${num})`;
             divItem.style.width = `calc(${width}/${num})`;
 
-            // append an item-div to the main
             divMain.appendChild(divItem);
+
+            // set createdGrid to true once the grid is created
+            gridCreated = true;
         }
     }
 }
 
 // 2. Change the color of the individual divs
-function changeColor(){
+function defaultColor(){
     this.style.backgroundColor = "black";
 }
+//
+// function changeColor(){
+//     this.style.backgroundColor = getRandomColor();
+// }
+//
+// function randomNum(maxNum){
+//     return Math.floor(Math.random()*maxNum);
+// }
+//
+// function getRandomColor(){
+//     const hue = randomNum(360);
+//     const saturation = randomNum(100);
+//     const lightness = randomNum(100);
+//
+//     return `hsl(${hue}deg, ${saturation}%, ${lightness}%)`;
+// }
 
 // 3. create a button that will send a user pop up and ask for the number of squares
 function buttonSettings(){
     // create a gridBtn tag
     const gridBtn = document.createElement("button");
     const resetBtn = document.createElement("button");
+    // const colorBtn = document.createElement("button");
 
-
-    const classButton = document.createAttribute("class");
+    // grid button
+    const gridBtnClass = document.createAttribute("class");
     const buttonText = document.createTextNode("Enter Grid Size");
 
+    // reset button
     const resetBtnClass = document.createAttribute("class");
     const resetBtnText = document.createTextNode("Reset");
 
-    classButton.value = "button";
-    gridBtn.setAttributeNode(classButton);
+    // change color button
+    // const colorBtnClass = document.createAttribute("class");
+    // const colorBtnText = document.createTextNode("Rainbow");
+
+    gridBtnClass.value = "button";
+    gridBtn.setAttributeNode(gridBtnClass);
     gridBtn.appendChild(buttonText);
 
     resetBtnClass.value = "reset-btn";
     resetBtn.setAttributeNode(resetBtnClass);
     resetBtn.appendChild(resetBtnText);
 
+    // colorBtnClass.value = "Rainbow";
+    // colorBtn.setAttributeNode(colorBtnClass);
+    // colorBtn.appendChild(colorBtnText);
+
     // add event listener to the gridBtn
     gridBtn.addEventListener("click",inputGridSize);
     resetBtn.addEventListener("click",resetGrid);
+    // colorBtn.addEventListener("click",inputGridSize);
 
     // style the gridBtn
     gridBtn.style.margin = "5px";
+    resetBtn.style.margin = "5px";
+    // colorBtn.style.margin = "5px";
 
     // append gridBtn the div container
     divSlider.appendChild(gridBtn);
     divSlider.appendChild(resetBtn);
+    // divSlider.appendChild(colorBtn);
 }
 
 function inputGridSize(num){
-
-   num = prompt("Enter a Grid Size between 2 - 100: ");
-
-   if(num > 100)
-   {
-       createGrid(100);
-   }
-
+    // Always reset grid when button is clicked
     resetGrid();
 
-    // call the createGrid function
+    num = prompt("Enter a Grid Size between 2 - 100: ");
     createGrid(num);
 }
 
-// create a rest button that resets the grid to its original grid
-// create a function called reset
-// change the color back to white
 function resetGrid(){
-    // while user enters input
-    while(divMain.hasChildNodes()){
-        // delete the existing nodes
-        divMain.removeChild(divMain.firstChild);
+    // reset grid only if it has been created
+    if(gridCreated){
+        while(divMain.hasChildNodes()){
+            // delete all child nodes
+            divMain.removeChild(divMain.firstChild);
 
-        // change color to white
+        }
         divMain.style.backgroundColor = "white";
+
+        // reset gridCreated to false
+        gridCreated = false;
     }
 }
-
-// create a color button changes the color of the div into different colors
 
 buttonSettings();
 

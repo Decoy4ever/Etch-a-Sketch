@@ -3,6 +3,8 @@ const divSlider = document.querySelector(".slider-container");
 // gridCreated var used to keep track grid is created or not
 let gridCreated = false;
 
+let rainbowBtnPressed = false;
+
 // style the container
 divMain.style.height = "500px";
 divMain.style.width = "500px";
@@ -11,6 +13,9 @@ const width = divMain.style.width;
 
 // 1. Create a Grid
 function createGrid(num){
+
+    rainbowBtnPressed = false;
+    divMain.style.backgroundColor = "white";
 
     // use for nested loop to print x number of div
     for(let row = 0; row < num; row ++){
@@ -26,14 +31,20 @@ function createGrid(num){
             itemAtt.value = "main-item";
             divItem.setAttributeNode(itemAtt);
 
+            // Check if the rainbow button has been pressed
+            if (rainbowBtnPressed) {
+                // Set the default color to black
+                divItem.style.backgroundColor = "black";
+            }
+
             // add event listener to change color of div
             divItem.addEventListener("mouseover",defaultColor);
-            // divItem.addEventListener("mouseover",changeColor);
-
+            divItem.addEventListener("mouseover",changeColor);
 
             // style the div
             divItem.style.height = `calc(${height}/${num})`;
             divItem.style.width = `calc(${width}/${num})`;
+
 
             divMain.appendChild(divItem);
 
@@ -47,29 +58,37 @@ function createGrid(num){
 function defaultColor(){
     this.style.backgroundColor = "black";
 }
-//
-// function changeColor(){
-//     this.style.backgroundColor = getRandomColor();
-// }
-//
-// function randomNum(maxNum){
-//     return Math.floor(Math.random()*maxNum);
-// }
-//
-// function getRandomColor(){
-//     const hue = randomNum(360);
-//     const saturation = randomNum(100);
-//     const lightness = randomNum(100);
-//
-//     return `hsl(${hue}deg, ${saturation}%, ${lightness}%)`;
-// }
+
+function changeColor() {
+    if (rainbowBtnPressed) {
+        const divItems = document.querySelectorAll(".main-item");
+
+        divItems.forEach((divItem) => {
+            // Check if the background color is black, then change to rainbow color
+            if (divItem.style.backgroundColor === "black") {
+                divItem.style.backgroundColor = getRandomColor();
+            }
+        });
+    }
+}
+
+function randomNum(maxNum){
+    return Math.floor(Math.random()*maxNum);
+}
+
+function getRandomColor(){
+    const hue = randomNum(360);
+    const saturation = randomNum(100);
+    const lightness = randomNum(100);
+
+    return `hsl(${hue}deg, ${saturation}%, ${lightness}%)`;
+}
 
 // 3. create a button that will send a user pop up and ask for the number of squares
 function buttonSettings(){
     // create a gridBtn tag
     const gridBtn = document.createElement("button");
     const resetBtn = document.createElement("button");
-    // const colorBtn = document.createElement("button");
 
     // grid button
     const gridBtnClass = document.createAttribute("class");
@@ -79,10 +98,6 @@ function buttonSettings(){
     const resetBtnClass = document.createAttribute("class");
     const resetBtnText = document.createTextNode("Reset");
 
-    // change color button
-    // const colorBtnClass = document.createAttribute("class");
-    // const colorBtnText = document.createTextNode("Rainbow");
-
     gridBtnClass.value = "button";
     gridBtn.setAttributeNode(gridBtnClass);
     gridBtn.appendChild(buttonText);
@@ -91,24 +106,39 @@ function buttonSettings(){
     resetBtn.setAttributeNode(resetBtnClass);
     resetBtn.appendChild(resetBtnText);
 
-    // colorBtnClass.value = "Rainbow";
-    // colorBtn.setAttributeNode(colorBtnClass);
-    // colorBtn.appendChild(colorBtnText);
-
     // add event listener to the gridBtn
     gridBtn.addEventListener("click",inputGridSize);
     resetBtn.addEventListener("click",resetGrid);
-    // colorBtn.addEventListener("click",inputGridSize);
 
     // style the gridBtn
     gridBtn.style.margin = "5px";
     resetBtn.style.margin = "5px";
-    // colorBtn.style.margin = "5px";
 
     // append gridBtn the div container
     divSlider.appendChild(gridBtn);
     divSlider.appendChild(resetBtn);
-    // divSlider.appendChild(colorBtn);
+    colorBtn();
+}
+
+function colorBtn(){
+    const colorBtn = document.createElement("button");
+
+    // change color button
+    const colorBtnClass = document.createAttribute("class");
+    const colorBtnText = document.createTextNode("Rainbow");
+
+    colorBtnClass.value = "Rainbow";
+    colorBtn.setAttributeNode(colorBtnClass);
+    colorBtn.appendChild(colorBtnText);
+
+    colorBtn.addEventListener("click",function(){
+        // set the flag to true when rainbow button is pressed
+       rainbowBtnPressed = true;
+       changeColor();
+    });
+
+    colorBtn.style.margin = "5px";
+    divSlider.appendChild(colorBtn);
 }
 
 function inputGridSize(num){
@@ -116,7 +146,20 @@ function inputGridSize(num){
     resetGrid();
 
     num = prompt("Enter a Grid Size between 2 - 100: ");
-    createGrid(num);
+    if(num > 100)
+    {
+        alert("Creating Max: 100 x 100 Grid")
+        createGrid(100);
+    }
+    else if(num < 2)
+    {
+        alert("Creating a Min: 2 x 2 Grid");
+        createGrid(2);
+    }
+    else
+    {
+        createGrid(num);
+    }
 }
 
 function resetGrid(){
@@ -125,7 +168,6 @@ function resetGrid(){
         while(divMain.hasChildNodes()){
             // delete all child nodes
             divMain.removeChild(divMain.firstChild);
-
         }
         divMain.style.backgroundColor = "white";
 
